@@ -285,6 +285,10 @@ def view():
         k=k+1
   
     wb.close()
+    if os.path.getsize(excel_path) > 0:
+        print("File created successfully")
+    else:
+        print("File is empty or not written correctly")
 
     # return send_file("static/final.xlsx", as_attachment=True)
     return send_file('tmp/final.xlsx', as_attachment=True)
