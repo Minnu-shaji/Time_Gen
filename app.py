@@ -1,4 +1,4 @@
-#final code as on 16 july
+#final code as on 11 August
 from flask import Flask, render_template, request,send_file
 from flask import Flask, send_from_directory
 import pandas as pd
@@ -49,8 +49,13 @@ def page2():
 
 @app.route('/downloads/<path:filename>')
 def download_file(filename):
+    file_path = os.path.join('/tmp', filename)
     
-    return send_file('static/' + filename, as_attachment=True)
+    # return send_file('static/' + filename, as_attachment=True)
+    if os.path.exists(file_path):
+        return send_file(file_path, as_attachment=True)
+    else:
+        return "File not found", 404
 
 
 @app.route('/view', methods=['POST'])
@@ -66,7 +71,7 @@ def view():
     cell_obj1 = str(sheet_obj.cell(row=1, column=1).value)
     cell_obj2 =str( sheet_obj.cell(row=2, column=1).value)
     
-    excel_path = os.path.join(os.path.dirname(__file__), "static/final.xlsx")
+    excel_path = os.path.join('/tmp', 'final.xlsx')
     wb = xlsxwriter.Workbook(excel_path)
     ws = wb.add_worksheet("TimeTable")
     ws2=wb.add_worksheet("TeacherSlot")
@@ -282,4 +287,6 @@ def view():
     wb.close()
 
     # return send_file("static/final.xlsx", as_attachment=True)
-    return send_file(excel_path, as_attachment=True)
+    return send_file('tmp/final.xlsx', as_attachment=True)
+# if __name__ == '__main__':
+#     app.run(debug=True)
