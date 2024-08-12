@@ -60,6 +60,7 @@ def download_file(filename):
 
 @app.route('/view', methods=['POST'])
 def view():
+    print("POST request received at /view")
     files = [request.files[f'file{i}'] for i in range(1, 4)]
     s2=pd.read_excel(files[0],skiprows=2)
     s1=pd.read_excel(files[1])
